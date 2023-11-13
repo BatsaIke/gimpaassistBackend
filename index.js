@@ -15,6 +15,11 @@ if (!apiKey) {
 
 const openai = new OpenAI({ apiKey: apiKey });
 
+
+app.get('/', (req, res) => {
+  res.send('Hello, World!');
+});
+
 // Route for handling POST requests
 app.use(express.json()); // Parse JSON requests
 app.post('/response', async (req, res) => {
@@ -43,7 +48,7 @@ app.post('/response', async (req, res) => {
 });
 
 // Start the server
-const port = 6000;
+const port =process.env.PORT||6000;
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
