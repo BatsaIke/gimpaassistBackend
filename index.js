@@ -1,9 +1,12 @@
 const express = require('express');
 const OpenAI = require('openai');
 const fs = require('fs');
+const cors = require('cors');
+
 require('dotenv').config();
 
 const app = express(); 
+app.use(cors())
 
 // Set your OpenAI API key
 const apiKey = process.env.OPENAI_API_KEY;
@@ -53,3 +56,31 @@ const port =process.env.PORT||6000;
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+// const { OpenAI } = require("langchain/llms/openai");
+// // Document loader
+// const { OpenAIEmbeddings } = require("langchain/embeddings/openai");
+// const { MemoryVectorStore } =require ("langchain/vectorstores/memory");
+// const { CheerioWebBaseLoader } =require("langchain/document_loaders/web/cheerio");
+// const { RecursiveCharacterTextSplitter } =require("langchain/text_splitter");
+// const loader = new CheerioWebBaseLoader(
+//   "https://lilianweng.github.io/posts/2023-06-23-agent/"
+// );
+// const data =  loader.load();
+
+
+
+// const textSplitter = new RecursiveCharacterTextSplitter({
+//   chunkSize: 500,
+//   chunkOverlap: 0,
+// });
+
+// const splitDocs =  textSplitter.splitDocuments(data);
+
+
+// const embeddings = new OpenAIEmbeddings({azureOpenAIApiKey:apiKey});
+
+// const vectorStore =  MemoryVectorStore.fromDocuments(
+//   splitDocs,
+//   embeddings
+// );
