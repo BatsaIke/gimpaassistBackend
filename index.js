@@ -1,12 +1,11 @@
 const express = require('express');
 const OpenAI = require('openai');
-const fs = require('fs');
 const cors = require('cors');
 
 require('dotenv').config();
 
-const app = express(); 
-app.use(cors())
+const app = express();
+app.use(cors());
 
 // Set your OpenAI API key
 const apiKey = process.env.OPENAI_API_KEY;
@@ -18,26 +17,26 @@ if (!apiKey) {
 
 const openai = new OpenAI({ apiKey: apiKey });
 
-
 app.get('/', (req, res) => {
   res.send('Hello, Gimpa Assist!');
 });
 
 // Route for handling POST requests
 app.use(express.json()); // Parse JSON requests
+
 app.post('/response', async (req, res) => {
   try {
     // Extract the prompt from the request body
-    const prompt = req.body.prompt;
+    const { prompt } = req.body;
 
     if (!prompt) {
-      return res.status(400).json({ error: 'Enter a prompt to get a feedback.' });
+      return res.status(400).json({ error: 'Enter a prompt to get feedback.' });
     }
 
     const promptText = `${prompt}`;
 
-    const completion = await openai.chat.completions.create({
-      model: 'text-davinci-003', // Provide the model/engine name
+    const completion = await openai.completions.create({
+      model: 'text-davinci-003', // Provide the engine name
       prompt: promptText,
       max_tokens: 100, // Adjust as needed
     });
@@ -46,41 +45,12 @@ app.post('/response', async (req, res) => {
     res.json({ response: responseText });
   } catch (error) {
     console.error(error.message);
-    res.send(error.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
 // Start the server
-const port =process.env.PORT||6000;
+const port = process.env.PORT || 6000;
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
-
-// const { OpenAI } = require("langchain/llms/openai");
-// // Document loader
-// const { OpenAIEmbeddings } = require("langchain/embeddings/openai");
-// const { MemoryVectorStore } =require ("langchain/vectorstores/memory");
-// const { CheerioWebBaseLoader } =require("langchain/document_loaders/web/cheerio");
-// const { RecursiveCharacterTextSplitter } =require("langchain/text_splitter");
-// const loader = new CheerioWebBaseLoader(
-//   "https://lilianweng.github.io/posts/2023-06-23-agent/"
-// );
-// const data =  loader.load();
-
-
-
-// const textSplitter = new RecursiveCharacterTextSplitter({
-//   chunkSize: 500,
-//   chunkOverlap: 0,
-// });
-
-// const splitDocs =  textSplitter.splitDocuments(data);
-
-
-// const embeddings = new OpenAIEmbeddings({azureOpenAIApiKey:apiKey});
-
-// const vectorStore =  MemoryVectorStore.fromDocuments(
-//   splitDocs,
-//   embeddings
-// );
