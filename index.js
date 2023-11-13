@@ -17,7 +17,7 @@ const openai = new OpenAI({ apiKey: apiKey });
 
 
 app.get('/', (req, res) => {
-  res.send('Hello, World!');
+  res.send('Hello, Gimpa Assist!');
 });
 
 // Route for handling POST requests
@@ -43,6 +43,7 @@ app.post('/response', async (req, res) => {
     res.json({ response: responseText });
   } catch (error) {
     console.error(error.message);
+    res.send(error.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
