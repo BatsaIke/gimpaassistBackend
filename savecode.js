@@ -47,3 +47,7 @@ main();
 //   .catch(error => {
 //     console.error(error);
 //   });
+
+// git remote add origin https://github.com/BatsaIke/gimpaassistBackend.git
+// git branch -M main
+// git push -u origin main
